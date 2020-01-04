@@ -6,4 +6,4 @@ https://docs.google.com/document/d/1suk922UaPh4gqc5UvXoG20iKjKyD7pTfOvpBoWwWOPE/
 |First Name|Last Name|Student ID|
 |---|---|---|
 |Amirreza|Vedadiyan|9631153|
-|Mehrshad|Hoseini|9726153|
+|Mehrshad|Hosseini|9726153|
