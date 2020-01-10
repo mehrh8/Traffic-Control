@@ -1,5 +1,0 @@
-Your project's folder,
-
-Simple Example of Routing and simple graphics for this project:
-
-https://github.com/KNTU1/car-simulation-simple-example
