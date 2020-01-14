@@ -6,8 +6,8 @@ public class Line extends Path {
     private Line leftLine;
     private Line rightLine;
 
-    public Line(String id, double maxV, ESPoint d1, ESPoint d2, double x1, double y1, double x2, double y2, Line leftLine, Line rightLine) {
-        super(id, maxV, d1, d2);
+    public Line(String id, double maxV, ESPoint d1, ESPoint d2, Path next, double x1, double y1, double x2, double y2, Line leftLine, Line rightLine) {
+        super(id, maxV, d1, d2, next);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;

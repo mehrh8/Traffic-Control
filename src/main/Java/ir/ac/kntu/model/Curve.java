@@ -6,8 +6,8 @@ public class Curve extends Path {
     private Curve leftCurve;
     private Curve rightCurve;
 
-    public Curve(String id, double maxV, ESPoint d1, ESPoint d2, double centerX, double centerY, double radius, double teta1, double teta2, CurveDirection direction, Curve leftCurve, Curve rightCurve) {
-        super(id, maxV, d1, d2);
+    public Curve(String id, double maxV, ESPoint d1, ESPoint d2, Path next, double centerX, double centerY, double radius, double teta1, double teta2, CurveDirection direction, Curve leftCurve, Curve rightCurve) {
+        super(id, maxV, d1, d2, next);
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
