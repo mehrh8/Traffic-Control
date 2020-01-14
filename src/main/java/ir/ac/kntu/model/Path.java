@@ -3,10 +3,29 @@ package ir.ac.kntu.model;
 public abstract class Path {
     private String id;
     private double maxV;
+    private ESPoint d1,d2;
 
-    public Path(String id, double maxV) {
+    public Path(String id, double maxV, ESPoint d1, ESPoint d2) {
         this.id = id;
         this.maxV = maxV;
+        this.d1 = d1;
+        this.d2 = d2;
+    }
+
+    public ESPoint getD1() {
+        return d1;
+    }
+
+    public void setD1(ESPoint d1) {
+        this.d1 = d1;
+    }
+
+    public ESPoint getD2() {
+        return d2;
+    }
+
+    public void setD2(ESPoint d2) {
+        this.d2 = d2;
     }
 
     public String getId() {

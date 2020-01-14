@@ -3,34 +3,17 @@ package ir.ac.kntu.model;
 public class Line extends Path {
     private double x1,y1;
     private double x2,y2;
-    private ESPoint d1,d2;
     private Line leftLine;
     private Line rightLine;
 
-    public ESPoint getD1() {
-        return d1;
-    }
-
-    public void setD1(ESPoint d1) {
-        this.d1 = d1;
-    }
-
-    public ESPoint getD2() {
-        return d2;
-    }
-
-    public void setD2(ESPoint d2) {
-        this.d2 = d2;
-    }
-
-    public Line(String id, double maxV, double x1, double y1, double x2, double y2, ESPoint d1, ESPoint d2) {
-        super(id, maxV);
+    public Line(String id, double maxV, ESPoint d1, ESPoint d2, double x1, double y1, double x2, double y2, Line leftLine, Line rightLine) {
+        super(id, maxV, d1, d2);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
-        this.d1 = d1;
-        this.d2 = d2;
+        this.leftLine = leftLine;
+        this.rightLine = rightLine;
     }
 
     public double getX1() {
