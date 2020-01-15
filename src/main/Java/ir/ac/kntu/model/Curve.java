@@ -96,4 +96,11 @@ public class Curve extends Path {
     public double getY(double teta) {
         return this.centerY - this.radius * Math.sin(teta);
     }
+
+    public double getLengthTeta(){
+        return (teta2-teta1)*180/Math.PI;
+    }
+    public double getStartTeta(){
+        return teta1*180/Math.PI;
+    }
 }
