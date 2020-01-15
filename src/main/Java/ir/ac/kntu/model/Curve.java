@@ -2,20 +2,35 @@ package ir.ac.kntu.model;
 
 public class Curve extends Path {
     private double centerX, centerY, radius, teta1, teta2;
-    private CurveDirection Direction;
     private Curve leftCurve;
     private Curve rightCurve;
+    private String leftId,rightId;
 
-    public Curve(String id, double maxV, ESPoint d1, ESPoint d2, Path next, double centerX, double centerY, double radius, double teta1, double teta2, CurveDirection direction, Curve leftCurve, Curve rightCurve) {
-        super(id, maxV, d1, d2, next);
+    public Curve(String id, double maxV, Boolean truck,String nextPath, double centerX, double centerY, double radius, double teta1, double teta2, String leftId, String rightId) {
+        super(id, maxV, truck,nextPath);
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
         this.teta1 = teta1;
         this.teta2 = teta2;
-        Direction = direction;
-        this.leftCurve = leftCurve;
-        this.rightCurve = rightCurve;
+        this.leftId = leftId;
+        this.rightId = rightId;
+    }
+
+    public String getLeftId() {
+        return leftId;
+    }
+
+    public void setLeftId(String leftId) {
+        this.leftId = leftId;
+    }
+
+    public String getRightId() {
+        return rightId;
+    }
+
+    public void setRightId(String rightId) {
+        this.rightId = rightId;
     }
 
     public double getCenterX() {
@@ -56,14 +71,6 @@ public class Curve extends Path {
 
     public void setRadius(double radius) {
         this.radius = radius;
-    }
-
-    public CurveDirection getDirection() {
-        return Direction;
-    }
-
-    public void setDirection(CurveDirection direction) {
-        Direction = direction;
     }
 
     public double getTeta1() {

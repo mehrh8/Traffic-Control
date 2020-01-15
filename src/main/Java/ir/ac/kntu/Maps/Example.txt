@@ -1,2 +1,2 @@
-Line id x1 y1 x2 y2 leftId rightId maxV next truck
-Curve id centerX centerY radius teta1(Deg) teta2(Deg) leftID rightId maxV truck
+Line id x1 y1 x2 y2 leftId rightId maxV nextId truck
+Curve id centerX centerY radius teta1(Deg) teta2(Deg) leftID rightId maxV nextId truck
