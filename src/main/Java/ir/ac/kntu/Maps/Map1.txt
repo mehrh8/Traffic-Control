@@ -1,3 +1,9 @@
-Line id=L1 x1=1000 y1=100 d1=0 x2=300 y2=100 d2=1 next=C1 left=null right=L2 mavV=70
-Line id=L2 x1=1000 y1=170 d1=0 x2=300 y2=170 d2=1 next=C2 left=L1 right=L3 mavV=50
-Line id=L3 x1=1000 y1=240 d1=0 x2=300 y2=240 d2=1 next=C3 left=L2 right=null mavV=30
+Line L1 1600 130 500 130 L2 null 50 C1 1
+Line L2 1600 165 500 165 L3 L1 60 C2 0
+Line L3 1600 200 500 200 null L2 70 C3 0
+Line L4 500 870 1600 870 L5 null 50 end 1
+Line L5 500 835 1600 835 L6 L4 60 end 0
+Line L6 500 800 1600 800 null L5 70 end 0
+Curve C1 500 500 370 90 270 C2 null 50 L4 1
+Curve C2 500 500 335 90 270 C3 C1 60 L5 0
+Curve C2 500 500 300 90 270 null C2 70 L6 0
