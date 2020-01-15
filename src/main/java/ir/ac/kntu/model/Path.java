@@ -1,6 +1,7 @@
 package ir.ac.kntu.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public abstract class Path {
     private String id;
@@ -74,5 +75,4 @@ public abstract class Path {
     public void setMaxV(double maxV) {
         this.maxV = maxV;
     }
-
 }

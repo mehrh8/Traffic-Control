@@ -8,6 +8,10 @@ import java.util.Scanner;
 public class Map {
     ArrayList<Path> paths;
 
+    public ArrayList<Path> getPaths() {
+        return paths;
+    }
+
     public Map() {
         this.paths = new ArrayList<>();
     }
@@ -100,20 +104,6 @@ public class Map {
                         }
                     }
                 }
-            }
-        }
-        for (Path path : paths) {
-            if (path.getClass()==Line.class) {
-                Line line =(Line)path;
-                if (line.getLeftLine() != null) System.out.println(line.getLeftLine().getId());
-                else System.out.println("null");
-                System.out.println(line.getMaxV());
-            }
-            else{
-                Curve curve=(Curve)path;
-                if (curve.getLeftCurve()!=null) System.out.println(curve.getLeftCurve().getId());
-                else System.out.println("null");
-                System.out.println(curve.getMaxV());
             }
         }
     }

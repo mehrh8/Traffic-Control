@@ -99,4 +99,12 @@ public class Line extends Path {
         double dy=rightLine.getY1()-y;
         return this.y1+dy;
     }
+    public double getLength(){
+        return Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
+    }
+    public double getAngle(){
+        double angle = Math.atan((y2-y1)/(x2-x1));
+        if (x2<x1) angle+=Math.PI;
+        return angle*180/Math.PI;
+    }
 }
