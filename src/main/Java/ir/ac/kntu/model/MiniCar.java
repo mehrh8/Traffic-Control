@@ -1,4 +1,10 @@
 package ir.ac.kntu.model;
 
-public class MiniCar {
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+
+public class MiniCar extends Vehicle {
+    public MiniCar(double width, double length, double maxV, double v, double aP, double aN, double angle, double centerX, double centerY, Path nowPath, Rectangle shape) {
+        super(width, length, maxV, v, aP, aN, angle, centerX, centerY, nowPath, shape);
+    }
 }

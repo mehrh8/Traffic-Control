@@ -103,4 +103,9 @@ public class Curve extends Path {
     public double getStartTeta(){
         return teta1*180/Math.PI;
     }
+    public double getTetaFromXY(double x,double y){
+        double angle=Math.atan((y-centerY)/(x-centerX))*180/Math.PI;
+        if (x<centerX) angle+=180;
+        return angle;
+    }
 }

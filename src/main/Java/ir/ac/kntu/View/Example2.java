@@ -1,18 +1,20 @@
 package ir.ac.kntu.View;
 
+import ir.ac.kntu.model.Car;
 import ir.ac.kntu.model.Curve;
 import ir.ac.kntu.model.Line;
 import ir.ac.kntu.model.Map;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.CubicCurve;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Example2 extends Application {
@@ -37,5 +39,18 @@ public class Example2 extends Application {
         for (int i = 6; i < 9; i++) {
             CurveShape.makeCurve(root,(Curve) map.getPaths().get(i));
         }
+        /*
+        for (int i = 0; i < 20; i++) {
+            Car car1=new Car(40,60,2,-2,180,1600,130+35*i,map.getPaths().get(0),CarShape.getShape(1));
+            Thread r =new Thread(car1.new Move());
+            r.start();
+            root.getChildren().add(car1.getShape());
+        }*/
+
+        //root.getChildren().add(CarShape.getShape(1));
+        //root.getChildren().add(MiniCarShape.getShape(2));
+        //root.getChildren().add(TruckShape.getShape(1));
+        //root.getChildren().add(MotorcycleShape.getShape(1));
+
     }
 }
