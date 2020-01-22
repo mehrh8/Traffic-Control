@@ -108,4 +108,22 @@ public class Curve extends Path {
         if (x<centerX) angle+=180;
         return angle;
     }
+
+    @Override
+    public Location getNextLocation(Location nowLocation, double distance) {
+        if (calcDistance(new Location(0,0,teta2),nowLocation)<distance) return null;
+        double dAngle=distance/radius;//rads
+        if (teta2>teta1) dAngle*=-1;
+        double angle = nowLocation.getAngle()*Math.PI/180+Math.PI/2;
+        angle+=dAngle;
+        return new Location(centerX+radius*Math.cos(angle),centerY+radius*Math.sin(angle),angle*180/Math.PI-90);
+    }
+
+    @Override
+    public double calcDistance(Location location1, Location location2) {
+
+        double angle1=location1.getAngle()*Math.PI/180;
+        double angle2=location2.getAngle()*Math.PI/180;
+        return Math.abs(angle2-angle1)*this.radius;
+    }
 }

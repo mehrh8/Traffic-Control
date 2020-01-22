@@ -11,9 +11,7 @@ public abstract class Vehicle {
     double v;
     double aP;
     double aN;
-    double angle;
-    double centerX;
-    double centerY;
+    Location location;
     Path nowPath;
     Rectangle shape;
 
@@ -65,28 +63,12 @@ public abstract class Vehicle {
         this.aN = aN;
     }
 
-    public double getAngle() {
-        return angle;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setAngle(double angle) {
-        this.angle = angle;
-    }
-
-    public double getCenterX() {
-        return centerX;
-    }
-
-    public void setCenterX(double centerX) {
-        this.centerX = centerX;
-    }
-
-    public double getCenterY() {
-        return centerY;
-    }
-
-    public void setCenterY(double centerY) {
-        this.centerY = centerY;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Path getNowPath() {
@@ -105,24 +87,22 @@ public abstract class Vehicle {
         this.shape = shape;
     }
 
-    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, double angle, double centerX, double centerY, Path nowPath, Rectangle shape) {
+    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, Location location, Path nowPath, Rectangle shape) {
         this.width = width;
         this.length = length;
         this.maxV = maxV;
         this.v = v;
         this.aP = aP;
         this.aN = aN;
-        this.angle = angle;
-        this.centerX = centerX;
-        this.centerY = centerY;
+        this.location=location;
         this.nowPath = nowPath;
         this.shape = shape;
     }
 
     public void updateShape() {
-        shape.setRotate(angle);
-        shape.setX(centerX-length/2);
-        shape.setY(centerY-width/2);
+        shape.setRotate(location.getAngle());
+        shape.setX(location.getX()-length/2);
+        shape.setY(location.getY()-width/2);
     }
 
     public void updateV(boolean up){
@@ -148,8 +128,8 @@ public abstract class Vehicle {
             if (nowLine.getY2()-nowLine.getY1()<0) dirY=-1;
             else dirY=1;
             for (Vehicle vehicle: nowPath.getVehicles()) {
-                if ((vehicle.getCenterX()-centerX)*dirX>0 || (vehicle.getCenterY()-centerY)*dirY>0){
-                    double dR=Math.sqrt(Math.pow(vehicle.getCenterX()-centerX,2)+Math.pow(vehicle.getCenterY()-centerX,2));
+                if ((vehicle.location.getX()-location.getX())*dirX>0 || (vehicle.location.getY()-location.getY())*dirY>0){
+                    double dR=Math.sqrt(Math.pow(vehicle.location.getX()-location.getX(),2)+Math.pow(vehicle.location.getY()-location.getY(),2));
                     if (dR<min){
                         min=dR;
                         frontVehicle=vehicle;
@@ -161,7 +141,7 @@ public abstract class Vehicle {
             Curve curve=(Curve) nowPath;
             double dirTeta=(curve.getTeta2()-curve.getTeta1())/Math.abs(curve.getTeta2()-curve.getTeta1());
             for (Vehicle vehicle: nowPath.getVehicles()) {
-                double dT=(curve.getTetaFromXY(vehicle.centerX,vehicle.centerY)-curve.getTetaFromXY(centerX,centerY))*dirTeta;
+                double dT=(curve.getTetaFromXY(vehicle.location.getX(),vehicle.location.getY())-curve.getTetaFromXY(location.getX(),location.getY()))*dirTeta;
                 if (dT>0){
                     if (dT<min){
                         min=dT;

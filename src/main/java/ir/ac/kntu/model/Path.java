@@ -75,4 +75,8 @@ public abstract class Path {
     public void setMaxV(double maxV) {
         this.maxV = maxV;
     }
+
+    public abstract Location getNextLocation(Location nowLocation,double distance);
+
+    public abstract double calcDistance(Location location1,Location location2);
 }

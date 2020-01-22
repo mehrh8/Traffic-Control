@@ -107,4 +107,19 @@ public class Line extends Path {
         if (x2<x1) angle+=Math.PI;
         return angle*180/Math.PI;
     }
+
+
+    @Override
+    public Location getNextLocation(Location nowLocation, double distance) {
+        if(calcDistance(new Location(x2,y2,0),nowLocation)<distance) return null;
+        double angle=Math.atan((y2-y1)/(x2-x1));
+        if (y1>y2) angle+=Math.PI;
+        else if (y1==y2 && x2<x1) angle+=Math.PI;
+        return new Location(nowLocation.getX()+Math.cos(angle)*distance,nowLocation.getY()+Math.sin(angle)*distance,angle*180/Math.PI);
+    }
+
+    @Override
+    public double calcDistance(Location location1, Location location2) {
+        return Math.sqrt(Math.pow(location1.getX()-location2.getX(),2)+Math.pow(location1.getY()-location2.getY(),2));
+    }
 }
