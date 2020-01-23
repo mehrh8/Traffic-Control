@@ -4,7 +4,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
 public class MiniCar extends Vehicle {
-    public MiniCar(double width, double length, double maxV, double v, double aP, double aN,Location location, Path nowPath, Rectangle shape) {
-        super(width, length, maxV, v, aP, aN, location, nowPath, shape);
+    public MiniCar(double width, double length, double maxV, double v, double aP, double aN,Location location, Path nowPath,double distanceInNowPath, Rectangle shape) {
+        super(width, length, maxV, v, aP, aN, location, nowPath,distanceInNowPath, shape);
     }
 }

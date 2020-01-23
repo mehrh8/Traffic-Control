@@ -124,6 +124,18 @@ public class Curve extends Path {
 
         double angle1=location1.getAngle()*Math.PI/180;
         double angle2=location2.getAngle()*Math.PI/180;
-        return Math.abs(angle2-angle1)*this.radius;
+        return Math.abs((angle2-angle1)%Math.PI)*this.radius;
+    }
+
+    @Override
+    public Location getStartLocation() {
+        double teta1=this.teta1-Math.PI;
+        return new Location(centerX+radius*Math.cos(teta1),centerY+radius*Math.sin(teta1),teta1*180/Math.PI+270);
+    }
+
+    @Override
+    public Location getEndLocation() {
+        double teta2=this.teta2-Math.PI;
+        return new Location(centerX+radius*Math.cos(teta2),centerY+radius*Math.sin(teta2),teta2*180/Math.PI+270);
     }
 }

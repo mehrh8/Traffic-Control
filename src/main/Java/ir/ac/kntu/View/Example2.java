@@ -44,9 +44,26 @@ public class Example2 extends Application {
         //Test
         for (int i=0;i<3;i++) {
             ArrayList<Car> cars = new ArrayList<>();
-            Car car1 = new Car(40, 60, 2, -2, new Location(1600, 130+35*i, 180), map.getPaths().get(i), CarShape.getShape(i+1));
+            Car car1 = new Car(120, 0, 40, -20, new Location(1600, 130+35*i, 180), map.getPaths().get(i),0, CarShape.getShape(i+1));
             cars.add(car1);
             new Thread(car1).start();
+            map.getPaths().get(i).getVehicles().add(car1);
+            root.getChildren().add(car1.getShape());
+        }
+        for (int i=0;i<3;i++) {
+            ArrayList<Car> cars = new ArrayList<>();
+            Car car1 = new Car(70, 0, 20, -20, new Location(1400, 130+35*i, 180), map.getPaths().get(i),0, CarShape.getShape((i+2)%3+1));
+            cars.add(car1);
+            new Thread(car1).start();
+            map.getPaths().get(i).getVehicles().add(car1);
+            root.getChildren().add(car1.getShape());
+        }
+        for (int i=0;i<3;i++) {
+            ArrayList<Car> cars = new ArrayList<>();
+            Car car1 = new Car(80, -10, 30, -20, new Location(1200, 130+35*i, 180), map.getPaths().get(i),0, CarShape.getShape((i+3)%3+1));
+            cars.add(car1);
+            new Thread(car1).start();
+            map.getPaths().get(i).getVehicles().add(car1);
             root.getChildren().add(car1.getShape());
         }
 

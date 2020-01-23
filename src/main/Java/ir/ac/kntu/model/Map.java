@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class Map {
     ArrayList<Path> paths;
+    ArrayList<Path> startPaths;
+    ArrayList<Path> startPathsTruck;
 
     public ArrayList<Path> getPaths() {
         return paths;
@@ -14,6 +16,8 @@ public class Map {
 
     public Map() {
         this.paths = new ArrayList<>();
+        this.startPaths=new ArrayList<>();
+        this.startPathsTruck=new ArrayList<>();
     }
 
     public void read(String address) throws FileNotFoundException {
@@ -32,6 +36,13 @@ public class Map {
                 boolean truck=Integer.parseInt(data[10]) == 1;
                 Line line=new Line(id,maxV,truck,nextId,x1,y1,x2,y2,leftId,rightId);
                 paths.add(line);
+                if( data[11].compareTo("SPT")==0) {
+                    startPaths.add(line);
+                    startPathsTruck.add(line);
+                }
+                else if (data[11].compareTo("SP")==0){
+                    startPaths.add(line);
+                }
             }
             else if (data[0].compareTo("Curve")==0){
                 String id=data[1];

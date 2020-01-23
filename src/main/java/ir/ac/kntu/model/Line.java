@@ -5,6 +5,7 @@ import java.awt.geom.Line2D;
 public class Line extends Path {
     private double x1,y1;
     private double x2,y2;
+    private double angle;
     private Line leftLine;
     private Line rightLine;
     private String leftId,rightId;
@@ -17,6 +18,10 @@ public class Line extends Path {
         this.y2 = y2;
         this.leftId = leftId;
         this.rightId = rightId;
+        this.angle=Math.atan((y2-y1)/(x2-x1));
+        if (y1>y2) this.angle+=Math.PI;
+        else if (y1==y2 && x2<x1) angle+=Math.PI;
+        this.angle*=180/Math.PI;
     }
 
     public Line getLeftLine() {
@@ -103,23 +108,30 @@ public class Line extends Path {
         return Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
     }
     public double getAngle(){
-        double angle = Math.atan((y2-y1)/(x2-x1));
-        if (x2<x1) angle+=Math.PI;
-        return angle*180/Math.PI;
+        return angle;
     }
 
 
     @Override
     public Location getNextLocation(Location nowLocation, double distance) {
         if(calcDistance(new Location(x2,y2,0),nowLocation)<distance) return null;
-        double angle=Math.atan((y2-y1)/(x2-x1));
-        if (y1>y2) angle+=Math.PI;
-        else if (y1==y2 && x2<x1) angle+=Math.PI;
-        return new Location(nowLocation.getX()+Math.cos(angle)*distance,nowLocation.getY()+Math.sin(angle)*distance,angle*180/Math.PI);
+        double angle=this.angle*Math.PI/180;
+        return new Location(nowLocation.getX()+Math.cos(angle)*distance,nowLocation.getY()+Math.sin(angle)*distance,this.angle);
     }
 
     @Override
     public double calcDistance(Location location1, Location location2) {
         return Math.sqrt(Math.pow(location1.getX()-location2.getX(),2)+Math.pow(location1.getY()-location2.getY(),2));
+    }
+
+    @Override
+    public Location getStartLocation() {
+
+        return new Location(x1,y1,angle);
+    }
+
+    @Override
+    public Location getEndLocation() {
+        return new Location(x2,y2,angle);
     }
 }

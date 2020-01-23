@@ -14,6 +14,15 @@ public abstract class Vehicle {
     Location location;
     Path nowPath;
     Rectangle shape;
+    double distanceInNowPath;
+
+    public double getDistanceInNowPath() {
+        return distanceInNowPath;
+    }
+
+    public void setDistanceInNowPath(double distanceInNowPath) {
+        this.distanceInNowPath = distanceInNowPath;
+    }
 
     public double getWidth() {
         return width;
@@ -87,7 +96,7 @@ public abstract class Vehicle {
         this.shape = shape;
     }
 
-    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, Location location, Path nowPath, Rectangle shape) {
+    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, Location location, Path nowPath,double distanceInNowPath, Rectangle shape) {
         this.width = width;
         this.length = length;
         this.maxV = maxV;
@@ -96,6 +105,7 @@ public abstract class Vehicle {
         this.aN = aN;
         this.location=location;
         this.nowPath = nowPath;
+        this.distanceInNowPath=distanceInNowPath;
         this.shape = shape;
     }
 
@@ -108,11 +118,11 @@ public abstract class Vehicle {
     public void updateV(boolean up){
         double maxVPath=nowPath.getMaxV();
         if (up){
-            double tempV=v+aP/5;
+            double tempV=v+aP/100;
             if(tempV<maxV && tempV<maxVPath) v=tempV;
-            else v=Math.min(maxV,maxVPath);
+            else updateV(false);
         } else{
-            double tempV=v+aN/5;
+            double tempV=v+aN/100;
             if (tempV>0) v=tempV;
             else v=0;
         }
@@ -151,5 +161,8 @@ public abstract class Vehicle {
             }
         }
         return frontVehicle;
+    }
+    public double compareToByDistanceInNowPath(Vehicle v){
+        return this.distanceInNowPath-v.distanceInNowPath;
     }
 }

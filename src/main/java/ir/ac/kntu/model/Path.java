@@ -2,6 +2,7 @@ package ir.ac.kntu.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TimerTask;
 
 public abstract class Path {
     private String id;
@@ -79,4 +80,27 @@ public abstract class Path {
     public abstract Location getNextLocation(Location nowLocation,double distance);
 
     public abstract double calcDistance(Location location1,Location location2);
+
+    public abstract Location getStartLocation();
+
+    public abstract Location getEndLocation();
+
+    public void sortVehicles() {
+        for (int i = 0; i < vehicles.size(); i++) {
+            for (int j = i; j < vehicles.size(); j++) {
+                if (vehicles.get(i).compareToByDistanceInNowPath(vehicles.get(j))>0){
+                    Vehicle temp=vehicles.get(i);
+                    vehicles.set(i,vehicles.get(j));
+                    vehicles.set(j,temp);
+                }
+            }
+        }
+    }
+
+    public int getIndexVehicle(Vehicle vehicle){
+        for (int i = 0; i < vehicles.size(); i++) {
+            if (vehicle==vehicles.get(i)) return i;
+        }
+        return -1;
+    }
 }
