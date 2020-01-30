@@ -1,14 +1,38 @@
 package ir.ac.kntu.model;
 
+import ir.ac.kntu.Presenter.Presenter;
+import ir.ac.kntu.View.CurveShape;
+import ir.ac.kntu.View.LineShape;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Map {
-    ArrayList<Path> paths;
-    ArrayList<Path> startPaths;
-    ArrayList<Path> startPathsTruck;
+    private ArrayList<Path> paths;
+    private ArrayList<Path> startPaths;
+    private ArrayList<Path> startPathsTruck;
+
+    public void setPaths(ArrayList<Path> paths) {
+        this.paths = paths;
+    }
+
+    public ArrayList<Path> getStartPaths() {
+        return startPaths;
+    }
+
+    public void setStartPaths(ArrayList<Path> startPaths) {
+        this.startPaths = startPaths;
+    }
+
+    public ArrayList<Path> getStartPathsTruck() {
+        return startPathsTruck;
+    }
+
+    public void setStartPathsTruck(ArrayList<Path> startPathsTruck) {
+        this.startPathsTruck = startPathsTruck;
+    }
 
     public ArrayList<Path> getPaths() {
         return paths;
@@ -20,6 +44,16 @@ public class Map {
         this.startPathsTruck=new ArrayList<>();
     }
 
+    public void setMapToView(Presenter presenter){
+        for (Path path:paths) {
+            if (path.getClass()==Line.class){
+                LineShape.makeShape(presenter.getRoot(), (Line) path);
+            }
+            else if (path.getClass()==Curve.class){
+                CurveShape.makeCurve(presenter.getRoot(), (Curve) path);
+            }
+        }
+    }
     public void read(String address) throws FileNotFoundException {
         File myMap = new File(address);
         System.out.println(myMap.getAbsolutePath());
@@ -32,15 +66,16 @@ public class Map {
                 double x2=Double.parseDouble(data[4]),y2=Double.parseDouble(data[5]);
                 String leftId=data[6],rightId=data[7];
                 double maxV=Double.parseDouble(data[8]);
-                String nextId=data[9];
-                boolean truck=Integer.parseInt(data[10]) == 1;
-                Line line=new Line(id,maxV,truck,nextId,x1,y1,x2,y2,leftId,rightId);
+                String previousId=data[9];
+                String nextId=data[10];
+                boolean truck=Integer.parseInt(data[11]) == 1;
+                Line line=new Line(id,maxV,truck,previousId,nextId,x1,y1,x2,y2,leftId,rightId);
                 paths.add(line);
-                if( data[11].compareTo("SPT")==0) {
+                if( data[12].compareTo("SPT")==0) {
                     startPaths.add(line);
                     startPathsTruck.add(line);
                 }
-                else if (data[11].compareTo("SP")==0){
+                else if (data[12].compareTo("SP")==0){
                     startPaths.add(line);
                 }
             }
@@ -51,13 +86,30 @@ public class Map {
                 double teta1=Double.parseDouble(data[5]),teta2=Double.parseDouble(data[6]);
                 String leftId=data[7],rightId=data[8];
                 double maxV=Double.parseDouble(data[9]);
-                String nextId=data[10];
-                boolean truck=Integer.parseInt(data[11]) == 1;
-                Curve curve=new Curve(id,maxV,truck,nextId,centerX,centerY,radius,teta1*Math.PI/180,teta2*Math.PI/180,leftId,rightId);
+                String previousId=data[10];
+                String nextId=data[11];
+                boolean truck=Integer.parseInt(data[12]) == 1;
+                Curve curve=new Curve(id,maxV,truck,previousId,nextId,centerX,centerY,radius,teta1*Math.PI/180,teta2*Math.PI/180,leftId,rightId);
                 paths.add(curve);
+                if( data[13].compareTo("SPT")==0) {
+                    startPaths.add(curve);
+                    startPathsTruck.add(curve);
+                }
+                else if (data[13].compareTo("SP")==0){
+                    startPaths.add(curve);
+                }
             }
         }
         for (int i = 0; i < paths.size(); i++) {
+            if (paths.get(i).getPreviousPath().compareTo("null")==0) {
+                paths.get(i).setPrevious(null);
+            }else{
+                for (int j = 0; j < paths.size(); j++) {
+                    if (paths.get(i).getPreviousPath().compareTo(paths.get(j).getId())==0){
+                        paths.get(i).setPrevious(paths.get(j));
+                    }
+                }
+            }
             if (paths.get(i).getNextPath().compareTo("null")==0) {
                 paths.get(i).setNext(null);
                 paths.get(i).setNextK(2);

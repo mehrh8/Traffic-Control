@@ -17,7 +17,7 @@ public class TruckShape {
         else if (select==4) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Truck_Yellow.png");
         Image image = new Image(input);
         ImagePattern image_pattern = new ImagePattern(image);
-        Rectangle rect = new Rectangle(0, 0, 45, 30);
+        Rectangle rect = new Rectangle(-100, -100, 45, 30);
         rect.setFill(image_pattern);
         return rect;
     }

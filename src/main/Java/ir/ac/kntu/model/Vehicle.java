@@ -15,6 +15,16 @@ public abstract class Vehicle {
     Path nowPath;
     Rectangle shape;
     double distanceInNowPath;
+    private int id;
+    public Thread mythread;
+
+    public Thread getMythread() {
+        return mythread;
+    }
+
+    public void setMythread(Thread mythread) {
+        this.mythread = mythread;
+    }
 
     public double getDistanceInNowPath() {
         return distanceInNowPath;
@@ -96,7 +106,15 @@ public abstract class Vehicle {
         this.shape = shape;
     }
 
-    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, Location location, Path nowPath,double distanceInNowPath, Rectangle shape) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Vehicle(double width, double length, double maxV, double v, double aP, double aN, Location location, Path nowPath, double distanceInNowPath, Rectangle shape, int id) {
         this.width = width;
         this.length = length;
         this.maxV = maxV;
@@ -107,6 +125,7 @@ public abstract class Vehicle {
         this.nowPath = nowPath;
         this.distanceInNowPath=distanceInNowPath;
         this.shape = shape;
+        this.id=id;
     }
 
     public void updateShape() {
@@ -118,11 +137,11 @@ public abstract class Vehicle {
     public void updateV(boolean up){
         double maxVPath=nowPath.getMaxV();
         if (up){
-            double tempV=v+aP/100;
+            double tempV=v+aP/20;
             if(tempV<maxV && tempV<maxVPath) v=tempV;
             else updateV(false);
         } else{
-            double tempV=v+aN/100;
+            double tempV=v+aN/20;
             if (tempV>0) v=tempV;
             else v=0;
         }
@@ -162,7 +181,15 @@ public abstract class Vehicle {
         }
         return frontVehicle;
     }
-    public double compareToByDistanceInNowPath(Vehicle v){
+    public double  compareToByDistanceInNowPath(Vehicle v){
         return this.distanceInNowPath-v.distanceInNowPath;
     }
+    public boolean hasEnd(){
+        if (nowPath.getNextK()==1){
+            if (nowPath.calcDistance(nowPath.getEndLocation(),this.location)<10) return true;
+        }
+        return false;
+    }
+    public abstract int antedate();
+
 }

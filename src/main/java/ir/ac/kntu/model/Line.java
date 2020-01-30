@@ -10,8 +10,8 @@ public class Line extends Path {
     private Line rightLine;
     private String leftId,rightId;
 
-    public Line(String id, double maxV, Boolean truck,String nextPath, double x1, double y1, double x2, double y2, String leftId, String rightId) {
-        super(id, maxV, truck,nextPath);
+    public Line(String id, double maxV, Boolean truck,String previousPath,String nextPath, double x1, double y1, double x2, double y2, String leftId, String rightId) {
+        super(id, maxV, truck,previousPath,nextPath);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -133,5 +133,15 @@ public class Line extends Path {
     @Override
     public Location getEndLocation() {
         return new Location(x2,y2,angle);
+    }
+
+    @Override
+    public Location findLocationInCurrnetPathRight(Location location) {
+        return rightLine.getNextLocation(rightLine.getStartLocation(),calcDistance(getStartLocation(),location));
+    }
+
+    @Override
+    public Location findLocationInCurrnetPathLeft(Location location) {
+        return leftLine.getNextLocation(leftLine.getStartLocation(),calcDistance(getStartLocation(),location));
     }
 }

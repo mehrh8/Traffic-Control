@@ -1,4 +1,4 @@
-package ir.ac.kntu.View;
+/*package ir.ac.kntu.View;
 
 import ir.ac.kntu.model.*;
 import javafx.application.Application;
@@ -25,9 +25,6 @@ public class Example2 extends Application {
     @Override
     public void start(Stage stage) throws FileNotFoundException {
         Group root = new Group();
-
-
-
         Scene scene = new Scene(root, 1600, 1000, new ImagePattern(new Image(new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\grass.png"))));
         stage.setScene(scene);
         stage.setTitle("Test");
@@ -73,5 +70,8 @@ public class Example2 extends Application {
         //root.getChildren().add(TruckShape.getShape(1));
         //root.getChildren().add(MotorcycleShape.getShape(1));
 
+
+
     }
 }
+*/

@@ -6,8 +6,8 @@ public class Curve extends Path {
     private Curve rightCurve;
     private String leftId,rightId;
 
-    public Curve(String id, double maxV, Boolean truck,String nextPath, double centerX, double centerY, double radius, double teta1, double teta2, String leftId, String rightId) {
-        super(id, maxV, truck,nextPath);
+    public Curve(String id, double maxV, Boolean truck,String previousPath,String nextPath, double centerX, double centerY, double radius, double teta1, double teta2, String leftId, String rightId) {
+        super(id, maxV, truck,previousPath,nextPath);
         this.centerX = centerX;
         this.centerY = centerY;
         this.radius = radius;
@@ -138,4 +138,15 @@ public class Curve extends Path {
         double teta2=this.teta2-Math.PI;
         return new Location(centerX+radius*Math.cos(teta2),centerY+radius*Math.sin(teta2),teta2*180/Math.PI+270);
     }
+
+    @Override
+    public Location findLocationInCurrnetPathRight(Location location) {
+        return rightCurve.getNextLocation(getStartLocation(),rightCurve.radius/this.radius*calcDistance(getStartLocation(),location));
+    }
+
+    @Override
+    public Location findLocationInCurrnetPathLeft(Location location) {
+        return leftCurve.getNextLocation(getStartLocation(),leftCurve.radius/this.radius*calcDistance(getStartLocation(),location));
+    }
+
 }
