@@ -1,9 +1,13 @@
 package ir.ac.kntu.model;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,9 +17,14 @@ public class Motorcycle extends Vehicle implements Runnable {
     private double xt = 0, yt = 0;
     private int counterTimer = 0;
     private boolean isFrontVehicle = false;
+    private boolean betaMode=false;
+    private boolean betaModeBack=false;
+    private boolean betaModeTest=false;
+    private int selectColor;
 
-    public Motorcycle(double maxV, double v, double aP, double aN,Location location, Path nowPath,double distanceInNowPath, Rectangle shape, int id) {
+    public Motorcycle(double maxV, double v, double aP, double aN,Location location, Path nowPath,double distanceInNowPath, Rectangle shape, int id,int selectColor) {
         super(10, 20, maxV, v, aP, aN, location, nowPath,distanceInNowPath, shape,id);
+        this.selectColor=selectColor;
     }
 
 
@@ -34,6 +43,7 @@ public class Motorcycle extends Vehicle implements Runnable {
                     mythread.stop();
                     v=0;
                 } else {
+                    calcIsBackVehicle();
                     calcIsFrontVehicle();
                     if (isFrontVehicle) {
                         updateV(false);
@@ -89,7 +99,11 @@ public class Motorcycle extends Vehicle implements Runnable {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                updateShape();
+                try {
+                    updateShape();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         };
         animationTimer.start();
@@ -107,17 +121,93 @@ public class Motorcycle extends Vehicle implements Runnable {
                         if (nowPath.getNext().getVehicles().size() > 0) {
                             nowPath.getNext().sortVehicles();
                             if (nowPath.getNext().calcDistance(nowPath.getNext().getVehicles().get(0).location, nowPath.getNext().getStartLocation()) + nowPath.calcDistance(location, nowPath.getEndLocation()) < 110) {
-                                isFrontVehicle = true;
-                            } else isFrontVehicle = false;
-
-                        } else isFrontVehicle = false;
-                    } else isFrontVehicle = false;
+                                if(nowPath.getNext().getVehicles().get(0).getClass()!=MiniCar.class){
+                                    isFrontVehicle = true;
+                                    betaMode=false;
+                                }else {
+                                    isFrontVehicle = false;
+                                    if (nowPath.getNext().getVehicles().get(0).getV()<v) {
+                                        betaMode = true;
+                                    }else{
+                                        betaMode=false;
+                                    }
+                                }
+                            } else {
+                                isFrontVehicle = false;
+                                betaMode=false;
+                            }
+                        } else {
+                            isFrontVehicle = false;
+                            betaMode=false;
+                        }
+                    } else {
+                        isFrontVehicle = false;
+                        betaMode=false;
+                    }
                 } else {
                     index = nowPath.getIndexVehicle(thisObject);
                     if (index != -1 && nowPath.getVehicles().get(index) != null && nowPath.getVehicles().get(index + 1) != null) {
-                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index + 1).location) < 110)
-                            isFrontVehicle = true;
-                        else isFrontVehicle = false;
+                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index + 1).location) < 110){
+                            if(nowPath.getVehicles().get(index + 1).getClass()!=MiniCar.class){
+                                isFrontVehicle = true;
+                                betaMode=false;
+                            } else {
+                                isFrontVehicle = false;
+                                if (nowPath.getVehicles().get(index + 1).getV()<v) {
+                                    betaMode = true;
+                                }else{
+                                    betaMode=false;
+                                }
+                            }
+                        } else {
+                            isFrontVehicle = false;
+                            betaMode = false;
+                        }
+                    }
+                }
+            }
+            counterTimer = 0;
+        }
+    }
+
+    public void calcIsBackVehicle() {
+        counterTimer += 1;
+        if (counterTimer == 5) {
+            synchronized (nowPath.getVehicles()) {
+                nowPath.sortVehicles();
+                int nowpathVehiclesSize = nowPath.getVehicles().size();
+                int index = nowPath.getIndexVehicle(thisObject);
+                if (index == 0) {
+                    if (nowPath.getPrevious() != null) {
+                        if (nowPath.getPrevious().getVehicles().size() > 0) {
+                            nowPath.getPrevious().sortVehicles();
+                            if (nowPath.getPrevious().calcDistance(nowPath.getPrevious().getVehicles().get(nowPath.getPrevious().getVehicles().size()-1).location, nowPath.getPrevious().getEndLocation()) + nowPath.calcDistance(location, nowPath.getStartLocation()) < 110) {
+                                if(nowPath.getPrevious().getVehicles().get(nowPath.getPrevious().getVehicles().size()-1).getClass()!=MiniCar.class){
+                                    betaMode=false;
+                                }else {
+                                    betaModeBack=true;
+                                }
+                            } else {
+                                betaModeBack=false;
+                            }
+                        } else {
+                            betaModeBack=false;
+                        }
+                    } else {
+                        betaModeBack=false;
+                    }
+                } else {
+                    index = nowPath.getIndexVehicle(thisObject);
+                    if (index != -1 && nowPath.getVehicles().get(index) != null && nowPath.getVehicles().get(index - 1) != null) {
+                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index - 1).location) < 110){
+                            if(nowPath.getVehicles().get(index - 1).getClass()!=MiniCar.class){
+                                betaModeBack=false;
+                            } else {
+                                betaModeBack=true;
+                            }
+                        } else {
+                            betaModeBack = false;
+                        }
                     }
                 }
             }
@@ -141,6 +231,12 @@ public class Motorcycle extends Vehicle implements Runnable {
                 pathRight.sortVehicles();
                 Vehicle nextVehicle = pathRight.findFront(this.location);
                 Vehicle backVehicle = pathRight.findBack(this.location);
+                if (nextVehicle!=null) {
+                    if (nextVehicle.getClass() == MiniCar.class) nextVehicle = null;
+                }
+                if (backVehicle!=null) {
+                    if (backVehicle.getClass() == MiniCar.class) backVehicle = null;
+                }
 
                 if(nextVehicle==null && backVehicle==null){
                     this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
@@ -170,7 +266,12 @@ public class Motorcycle extends Vehicle implements Runnable {
                 pathLeft.sortVehicles();
                 Vehicle nextVehicle = pathLeft.findFront(this.location);
                 Vehicle backVehicle = pathLeft.findBack(this.location);
-
+                if (nextVehicle!=null) {
+                    if (nextVehicle.getClass() == MiniCar.class) nextVehicle = null;
+                }
+                if (backVehicle!=null) {
+                    if (backVehicle.getClass() == MiniCar.class) backVehicle = null;
+                }
                 if (nextVehicle==null && backVehicle==null){
                     this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                     return -1;
@@ -193,5 +294,52 @@ public class Motorcycle extends Vehicle implements Runnable {
             }
         }
         return 0;
+    }
+
+    @Override
+    public void updateShape() throws FileNotFoundException {
+        if (!betaMode && !betaModeBack) {
+            if (!betaModeTest) {
+                betaModeTest= false;
+                shape.setRotate(location.getAngle());
+                shape.setX(location.getX() - length / 2);
+                shape.setY(location.getY() - width / 2);
+            }else {
+                betaModeTest=false;
+                FileInputStream input = null;
+                if (selectColor==1) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Red.png");
+                else if (selectColor==2) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Green.png");
+                else if (selectColor==3) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Blue.png");
+                else if (selectColor==4) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Yellow.png");
+                Image image = new Image(input);
+                ImagePattern image_pattern = new ImagePattern(image);
+                shape.setFill(image_pattern);
+                shape.setWidth(20);
+                shape.setHeight(10);
+                width=10;
+                length=20;
+            }
+        } else{
+            if (!betaModeTest) {
+                betaModeTest= true;
+                FileInputStream input = null;
+                if (selectColor==1) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Red_Beta.png");
+                else if (selectColor==2) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Green_Beta.png");
+                else if (selectColor==3) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Blue_Beta.png");
+                else if (selectColor==4) input=new FileInputStream("src\\main\\Java\\ir\\ac\\kntu\\Image\\Motorcycle_Yellow_Beta.png");
+                Image image = new Image(input);
+                ImagePattern image_pattern = new ImagePattern(image);
+                shape.setFill(image_pattern);
+                shape.setWidth(20);
+                shape.setHeight(30);
+                width=30;
+                length=20;
+            }else {
+                betaModeTest= true;
+                shape.setRotate(location.getAngle());
+                shape.setX(location.getX() - length / 2);
+                shape.setY(location.getY() - width / 2);
+            }
+        }
     }
 }

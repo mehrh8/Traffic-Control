@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileNotFoundException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -88,7 +89,11 @@ public class Truck extends Vehicle implements Runnable{
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                updateShape();
+                try {
+                    updateShape();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         };
         animationTimer.start();
@@ -136,57 +141,59 @@ public class Truck extends Vehicle implements Runnable{
             pathLeft = ((Curve) nowPath).getLeftCurve();
         }
         if (pathRight!=null) {
-            if (v < pathRight.getMaxV()) {
-                pathRight.sortVehicles();
-                Vehicle nextVehicle = pathRight.findFront(this.location);
-                Vehicle backVehicle = pathRight.findBack(this.location);
+            if (pathRight.getTruck()) {
+                if (v < pathRight.getMaxV()) {
+                    pathRight.sortVehicles();
+                    Vehicle nextVehicle = pathRight.findFront(this.location);
+                    Vehicle backVehicle = pathRight.findBack(this.location);
 
-                if(nextVehicle==null && backVehicle==null){
-                    this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
-                    return 1;
-                }else if (nextVehicle==null){
-                    if (pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100){
+                    if (nextVehicle == null && backVehicle == null) {
                         this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
                         return 1;
-                    }
-                }else if (backVehicle==null){
-                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100){
-                        this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
-                        return 1;
-                    }
-                }else{
-                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100 && pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100) {
-                        this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
-                        return 1;
+                    } else if (nextVehicle == null) {
+                        if (pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
+                            return 1;
+                        }
+                    } else if (backVehicle == null) {
+                        if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
+                            return 1;
+                        }
+                    } else {
+                        if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100 && pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
+                            return 1;
+                        }
                     }
                 }
-
-
             }
         }
         if (pathLeft!=null) {
-            if (v < pathLeft.getMaxV()) {
-                pathLeft.sortVehicles();
-                Vehicle nextVehicle = pathLeft.findFront(this.location);
-                Vehicle backVehicle = pathLeft.findBack(this.location);
+            if (pathLeft.getTruck()) {
+                if (v < pathLeft.getMaxV()) {
+                    pathLeft.sortVehicles();
+                    Vehicle nextVehicle = pathLeft.findFront(this.location);
+                    Vehicle backVehicle = pathLeft.findBack(this.location);
 
-                if (nextVehicle==null && backVehicle==null){
-                    this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
-                    return -1;
-                } else if (nextVehicle==null){
-                    if (pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100){
+                    if (nextVehicle == null && backVehicle == null) {
                         this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                         return -1;
-                    }
-                }else if (backVehicle==null){
-                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100){
-                        this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
-                        return -1;
-                    }
-                }else {
-                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100 && pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100) {
-                        this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
-                        return -1;
+                    } else if (nextVehicle == null) {
+                        if (pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
+                            return -1;
+                        }
+                    } else if (backVehicle == null) {
+                        if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
+                            return -1;
+                        }
+                    } else {
+                        if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100 && pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100) {
+                            this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
+                            return -1;
+                        }
                     }
                 }
             }

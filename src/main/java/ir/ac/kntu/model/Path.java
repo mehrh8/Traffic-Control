@@ -167,7 +167,7 @@ public abstract class Path {
                     return calcDistance(getVehicles().get(i).getLocation(), this.getStartLocation()) - calcDistance(location, this.getStartLocation());
             }
             if (next!=null){
-                return calcDistance(this.getEndLocation(),location)+next.findFrontDistance(getEndLocation());
+                return calcDistance(this.getEndLocation(),location)+next.findFrontDistance(next.getStartLocation());
             }
         }
         return 0;
@@ -197,7 +197,7 @@ public abstract class Path {
                     return calcDistance(getVehicles().get(i).getLocation(), this.getEndLocation()) - calcDistance(location, this.getEndLocation());
             }
             if (previous!=null){
-                return calcDistance(location,getStartLocation())+previous.findBackDistance(getStartLocation());
+                return calcDistance(location,getStartLocation())+previous.findBackDistance(previous.getEndLocation());
             }
         }
         return 0;

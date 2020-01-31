@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileNotFoundException;
 import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -17,7 +18,6 @@ public class Car extends Vehicle implements Runnable {
 
     public Car(double maxV, double v, double aP, double aN, Location location, Path nowPath, double distanceInNowPath, Rectangle shape, int id) {
         super(20, 30, maxV, v, aP, aN, location, nowPath, distanceInNowPath, shape, id);
-        updateShape();
     }
 
     @Override
@@ -90,7 +90,11 @@ public class Car extends Vehicle implements Runnable {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                updateShape();
+                try {
+                    updateShape();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         };
         animationTimer.start();

@@ -15,10 +15,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Presenter {
-    private double maxVCar=100,v0Car=0,aPCar=20,aNCar=-20,addPerSecondCar=2;
-    private double maxVMiniCar=120,v0MiniCar=0,aPMiniCar=30,aNMiniCar=-40,addPerSecondMiniCar=2;
-    private double maxVTruck=60,v0Truck=0,aPTruck=15,aNTruck=-15,addPerSecondTruck=2;
-    private double maxVMotorcycle=120,v0Motorcycle=0,aPMotorcycle=40,aNMotorcycle=-20,addPerSecondMotorcycle=2;
+    private double maxVCar=100,v0Car=0,aPCar=20,aNCar=-20,addPerSecondCar=1;
+    private double maxVMiniCar=50,v0MiniCar=0,aPMiniCar=30,aNMiniCar=-40,addPerSecondMiniCar=1;
+    private double maxVTruck=60,v0Truck=0,aPTruck=15,aNTruck=-15,addPerSecondTruck=1;
+    private double maxVMotorcycle=120,v0Motorcycle=0,aPMotorcycle=40,aNMotorcycle=-20,addPerSecondMotorcycle=1;
     private int colorCar=1,colorMiniCar=2,colorTruck=3,colorMotorcycle=4;
     private double minDistance=100,counterCar=0,counterMiniCar=0,counterTruck=0,counterMotorcycle=0;
     private Map map=new Map();
@@ -93,7 +93,7 @@ public class Presenter {
                 for (int i = 0; i < addPerSecondMiniCar; i++) {
                     int randStartPath = getRandomInt(0, startPaths.size() - 1);
                     MiniCar miniCar = null;
-                    miniCar = new MiniCar(maxVMiniCar, v0MiniCar, aPMiniCar, aNMiniCar, startPaths.get(randStartPath).getStartLocation(), startPaths.get(randStartPath), 0,(Rectangle) miniCarShapes.get(co[2] %1000),co[0]);
+                    miniCar = new MiniCar(maxVMiniCar, v0MiniCar, aPMiniCar, aNMiniCar, startPaths.get(randStartPath).getStartLocation(), startPaths.get(randStartPath), 0,(Rectangle) miniCarShapes.get(co[2] %1000),co[0],colorMiniCar);
                     co[0]+=1;
                     co[2]+=1;
                     vehicles.add(miniCar);
@@ -119,7 +119,7 @@ public class Presenter {
                 for (int i = 0; i < addPerSecondMotorcycle; i++) {
                     int randStartPath = getRandomInt(0, startPaths.size() - 1);
                     Motorcycle motorcycle = null;
-                    motorcycle = new Motorcycle(maxVMotorcycle, v0Motorcycle, aPMotorcycle, aNMotorcycle, startPaths.get(randStartPath).getStartLocation(), startPaths.get(randStartPath), 0,(Rectangle) motorCycleShapes.get(co[4] %1000),co[0]);
+                    motorcycle = new Motorcycle(maxVMotorcycle, v0Motorcycle, aPMotorcycle, aNMotorcycle, startPaths.get(randStartPath).getStartLocation(), startPaths.get(randStartPath), 0,(Rectangle) motorCycleShapes.get(co[4] %1000),co[0],colorMotorcycle);
                     co[0] +=1;
                     co[4]+=1;
                     vehicles.add(motorcycle);

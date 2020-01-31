@@ -4,6 +4,8 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
+import java.io.FileNotFoundException;
+
 public abstract class Vehicle {
     double width;
     double length;
@@ -128,7 +130,7 @@ public abstract class Vehicle {
         this.id=id;
     }
 
-    public void updateShape() {
+    public void updateShape() throws FileNotFoundException {
         shape.setRotate(location.getAngle());
         shape.setX(location.getX()-length/2);
         shape.setY(location.getY()-width/2);
