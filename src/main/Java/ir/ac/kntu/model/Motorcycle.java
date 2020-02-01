@@ -21,10 +21,12 @@ public class Motorcycle extends Vehicle implements Runnable {
     private boolean betaModeBack=false;
     private boolean betaModeTest=false;
     private int selectColor;
+    private double fasele;
 
-    public Motorcycle(double maxV, double v, double aP, double aN,Location location, Path nowPath,double distanceInNowPath, Rectangle shape, int id,int selectColor) {
+    public Motorcycle(double maxV, double v, double aP, double aN,Location location, Path nowPath,double distanceInNowPath, Rectangle shape, int id,int selectColor,double fasele) {
         super(10, 20, maxV, v, aP, aN, location, nowPath,distanceInNowPath, shape,id);
         this.selectColor=selectColor;
+        this.fasele=fasele;
     }
 
 
@@ -120,7 +122,7 @@ public class Motorcycle extends Vehicle implements Runnable {
                     if (nowPath.getNext() != null) {
                         if (nowPath.getNext().getVehicles().size() > 0) {
                             nowPath.getNext().sortVehicles();
-                            if (nowPath.getNext().calcDistance(nowPath.getNext().getVehicles().get(0).location, nowPath.getNext().getStartLocation()) + nowPath.calcDistance(location, nowPath.getEndLocation()) < 110) {
+                            if (nowPath.getNext().calcDistance(nowPath.getNext().getVehicles().get(0).location, nowPath.getNext().getStartLocation()) + nowPath.calcDistance(location, nowPath.getEndLocation()) < fasele+10) {
                                 if(nowPath.getNext().getVehicles().get(0).getClass()!=MiniCar.class){
                                     isFrontVehicle = true;
                                     betaMode=false;
@@ -147,7 +149,7 @@ public class Motorcycle extends Vehicle implements Runnable {
                 } else {
                     index = nowPath.getIndexVehicle(thisObject);
                     if (index != -1 && nowPath.getVehicles().get(index) != null && nowPath.getVehicles().get(index + 1) != null) {
-                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index + 1).location) < 110){
+                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index + 1).location) < fasele+10){
                             if(nowPath.getVehicles().get(index + 1).getClass()!=MiniCar.class){
                                 isFrontVehicle = true;
                                 betaMode=false;
@@ -181,7 +183,7 @@ public class Motorcycle extends Vehicle implements Runnable {
                     if (nowPath.getPrevious() != null) {
                         if (nowPath.getPrevious().getVehicles().size() > 0) {
                             nowPath.getPrevious().sortVehicles();
-                            if (nowPath.getPrevious().calcDistance(nowPath.getPrevious().getVehicles().get(nowPath.getPrevious().getVehicles().size()-1).location, nowPath.getPrevious().getEndLocation()) + nowPath.calcDistance(location, nowPath.getStartLocation()) < 110) {
+                            if (nowPath.getPrevious().calcDistance(nowPath.getPrevious().getVehicles().get(nowPath.getPrevious().getVehicles().size()-1).location, nowPath.getPrevious().getEndLocation()) + nowPath.calcDistance(location, nowPath.getStartLocation()) < fasele+10) {
                                 if(nowPath.getPrevious().getVehicles().get(nowPath.getPrevious().getVehicles().size()-1).getClass()!=MiniCar.class){
                                     betaMode=false;
                                 }else {
@@ -199,7 +201,7 @@ public class Motorcycle extends Vehicle implements Runnable {
                 } else {
                     index = nowPath.getIndexVehicle(thisObject);
                     if (index != -1 && nowPath.getVehicles().get(index) != null && nowPath.getVehicles().get(index - 1) != null) {
-                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index - 1).location) < 110){
+                        if (nowPath.calcDistance(nowPath.getVehicles().get(index).location, nowPath.getVehicles().get(index - 1).location) < fasele+10){
                             if(nowPath.getVehicles().get(index - 1).getClass()!=MiniCar.class){
                                 betaModeBack=false;
                             } else {
@@ -242,17 +244,17 @@ public class Motorcycle extends Vehicle implements Runnable {
                     this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
                     return 1;
                 }else if (nextVehicle==null){
-                    if (pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100){
+                    if (pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > fasele){
                         this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
                         return 1;
                     }
                 }else if (backVehicle==null){
-                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100){
+                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > fasele){
                         this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
                         return 1;
                     }
                 }else{
-                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100 && pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > 100) {
+                    if (pathRight.findFrontDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > fasele && pathRight.findBackDistance(nowPath.findLocationInCurrnetPathRight(this.location)) > fasele) {
                         this.setLocation(nowPath.findLocationInCurrnetPathRight(this.location));
                         return 1;
                     }
@@ -276,17 +278,17 @@ public class Motorcycle extends Vehicle implements Runnable {
                     this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                     return -1;
                 } else if (nextVehicle==null){
-                    if (pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100){
+                    if (pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > fasele){
                         this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                         return -1;
                     }
                 }else if (backVehicle==null){
-                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100){
+                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > fasele){
                         this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                         return -1;
                     }
                 }else {
-                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100 && pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > 100) {
+                    if (pathLeft.findFrontDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > fasele && pathLeft.findBackDistance(nowPath.findLocationInCurrnetPathLeft(this.location)) > fasele) {
                         this.setLocation(nowPath.findLocationInCurrnetPathLeft(this.location));
                         return -1;
                     }
